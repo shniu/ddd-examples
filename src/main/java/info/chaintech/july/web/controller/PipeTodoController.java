@@ -2,7 +2,6 @@ package info.chaintech.july.web.controller;
 
 import info.chaintech.july.web.message.ResponseMessage;
 import info.chaintech.july.web.vo.TodoVo;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +24,7 @@ public class PipeTodoController {
         return ResponseMessage.ok();
     }
 
-    @ApiOperation(value ="获取todo待办列表", notes = "获取某条商务线下的所有todo待办列表")
+    @ApiOperation(value = "获取todo待办列表", notes = "获取某条商务线下的所有todo待办列表")
     @GetMapping("/{bizId}/todo")
     public ResponseMessage getTodoCollections(@PathVariable int bizId) {
         log.info("bizId: {}", bizId);
