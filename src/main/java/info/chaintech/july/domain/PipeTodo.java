@@ -1,8 +1,11 @@
 package info.chaintech.july.domain;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by shniu on 2018/7/7.
@@ -36,4 +39,16 @@ public class PipeTodo {
     @Column(length = 32)
     @Enumerated(EnumType.STRING)
     private TodoStatus todoStatus;
+
+    /**
+     * 创建时间
+     */
+    @CreatedDate
+    private Date createdOn;
+
+    /**
+     * 最后修改时间
+     */
+    @LastModifiedDate
+    private Date updatedOn;
 }

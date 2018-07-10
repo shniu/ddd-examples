@@ -21,6 +21,10 @@ import org.springframework.web.bind.annotation.*;
 public class BusinessLineController {
     private BusinessLineService businessLineService;
 
+    public BusinessLineController(BusinessLineService businessLineService) {
+        this.businessLineService = businessLineService;
+    }
+
     @ApiOperation(value = "获取商务线列表", notes = "商务线的列表，可分页获取", produces = "application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNo", paramType = "path", value = "页码", dataType = "string"),
