@@ -1,0 +1,44 @@
+package info.chaintech.july.web.controller;
+
+import info.chaintech.july.service.BusinessLineService;
+import info.chaintech.july.web.message.MapResponseMessage;
+import info.chaintech.july.web.message.ResponseMessage;
+import info.chaintech.july.web.vo.NewBizLineVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * Created by shniu on 2018/7/9.
+ */
+
+@Api(value = "商务线接口", description = "商务线相关的接口集合", consumes = "application/json", produces = "application/json")
+@RestController
+@RequestMapping("/api/v1/line")
+public class BusinessLineController {
+    private BusinessLineService businessLineService;
+
+    @ApiOperation(value = "获取商务线列表", notes = "商务线的列表，可分页获取", produces = "application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNo", paramType = "path", value = "页码", dataType = "string"),
+            @ApiImplicitParam(name = "pageSize", paramType = "path", value = "每页大小", dataType = "string")
+    })
+    @GetMapping("/list/{pageNo}/{pageSize}"
+    public MapResponseMessage lineListPageable(@PathVariable int pageNo, @PathVariable int pageSize) {
+        return MapResponseMessage.ok()
+                .put("lines", businessLineService.queryBizLinesPageable(PageRequest.of(pageNo, pageSize)))
+                .put("totalElements", 0)
+                .put("pageNo", pageNo)
+                .put("pageSize", pageSize);
+    }
+
+    @ApiOperation(value = "添加商务线", notes = "添加一条商务线，返回商务线id")
+    @PostMapping(value = "/info", produces = "application/json")
+    public ResponseMessage addBusinessLine(@RequestBody NewBizLineVo newBizLineVo) {
+
+        return ResponseMessage.ok();
+    }
+}
