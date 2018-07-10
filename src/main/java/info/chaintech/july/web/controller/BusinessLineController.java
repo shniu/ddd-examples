@@ -26,7 +26,7 @@ public class BusinessLineController {
             @ApiImplicitParam(name = "pageNo", paramType = "path", value = "页码", dataType = "string"),
             @ApiImplicitParam(name = "pageSize", paramType = "path", value = "每页大小", dataType = "string")
     })
-    @GetMapping("/list/{pageNo}/{pageSize}"
+    @GetMapping("/list/{pageNo}/{pageSize}")
     public MapResponseMessage lineListPageable(@PathVariable int pageNo, @PathVariable int pageSize) {
         return MapResponseMessage.ok()
                 .put("lines", businessLineService.queryBizLinesPageable(PageRequest.of(pageNo, pageSize)))
