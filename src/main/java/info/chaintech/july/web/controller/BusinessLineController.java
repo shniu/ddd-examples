@@ -8,7 +8,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(value = "商务线接口", description = "商务线相关的接口集合", consumes = "application/json", produces = "application/json")
 @RestController
-@RequestMapping("/api/v1/line")
+@RequestMapping("/api/v1/pipeline")
+@Validated
+@Slf4j
 public class BusinessLineController {
     private BusinessLineService businessLineService;
 
@@ -41,8 +45,8 @@ public class BusinessLineController {
 
     @ApiOperation(value = "添加商务线", notes = "添加一条商务线，返回商务线id")
     @PostMapping(value = "/info", produces = "application/json")
-    public ResponseMessage addBusinessLine(@RequestBody NewBizLineVo newBizLineVo) {
-
+    public ResponseMessage addBusinessLine(@Validated @RequestBody NewBizLineVo newBizLineVo) {
+        businessLineService.addBizPipeline(newBizLineVo);
         return ResponseMessage.ok();
     }
 }

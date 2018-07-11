@@ -2,6 +2,8 @@ package info.chaintech.july.domain;
 
 import info.chaintech.july.domain.enums.PipelineStatus;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -49,12 +51,21 @@ public class BusinessPipeline {
     private PipelineStatus status;
 
     /**
+     * 添加线索的人
+     */
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "created_uid", referencedColumnName = "uid")
+    private User createdUser;
+
+    /**
      * 添加时间
      */
+    @CreatedDate
     private Date createdOn;
 
     /**
      * 最后更新时间
      */
+    @LastModifiedDate
     private Date updatedOn;
 }

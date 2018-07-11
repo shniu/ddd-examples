@@ -1,5 +1,6 @@
 package info.chaintech.july.conf;
 
+import info.chaintech.july.dao.BusinessPipelineRepository;
 import info.chaintech.july.service.BusinessLineService;
 import info.chaintech.july.service.impl.BusinessLineServiceImpl;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class JulyConfig {
 
     @Bean
-    public BusinessLineService businessLineService() {
-        return new BusinessLineServiceImpl();
+    public BusinessLineService businessLineService(BusinessPipelineRepository businessPipelineRepository) {
+        return new BusinessLineServiceImpl(businessPipelineRepository);
     }
 }
