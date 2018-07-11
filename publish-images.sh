@@ -10,4 +10,4 @@ mvn clean package
 sudo docker login --username=develop@35482511 registry.cn-qingdao.aliyuncs.com
 
 # Push image to the aliyun docker hub
-sudo docker push registry.cn-qingdao.aliyuncs.com/syph/ju:latest
+sudo docker push registry.cn-qingdao.aliyuncs.com/syph/july:latest
