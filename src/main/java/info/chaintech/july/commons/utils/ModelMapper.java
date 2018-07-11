@@ -1,4 +1,4 @@
-package info.chaintech.july.utils;
+package info.chaintech.july.commons.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;

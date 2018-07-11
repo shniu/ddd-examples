@@ -1,4 +1,4 @@
-package info.chaintech.july.domain;
+package info.chaintech.july.domain.enums;
 
 /**
  * Created by shniu on 2018/7/7.

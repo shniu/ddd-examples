@@ -1,4 +1,4 @@
-package info.chaintech.july.utils;
+package info.chaintech.july.commons.utils;
 
 import org.springframework.util.StringUtils;
 

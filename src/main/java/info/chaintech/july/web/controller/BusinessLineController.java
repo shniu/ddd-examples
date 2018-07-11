@@ -1,6 +1,8 @@
 package info.chaintech.july.web.controller;
 
+import info.chaintech.july.conf.aop.CoolLogger;
 import info.chaintech.july.service.BusinessLineService;
+import info.chaintech.july.service.dto.BizPipelinesPageableDto;
 import info.chaintech.july.web.message.MapResponseMessage;
 import info.chaintech.july.web.message.ResponseMessage;
 import info.chaintech.july.web.vo.NewBizLineVo;
@@ -36,14 +38,16 @@ public class BusinessLineController {
     })
     @GetMapping("/list/{pageNo}/{pageSize}")
     public MapResponseMessage lineListPageable(@PathVariable int pageNo, @PathVariable int pageSize) {
+        BizPipelinesPageableDto bizPipelinesPageableDto = businessLineService.queryBizLinesPageable(PageRequest.of(pageNo, pageSize));
         return MapResponseMessage.ok()
-                .put("lines", businessLineService.queryBizLinesPageable(PageRequest.of(pageNo, pageSize)))
-                .put("totalElements", 0)
+                .put("lines", bizPipelinesPageableDto.getBizLineDtoList())
+                .put("totalElements", bizPipelinesPageableDto.getTotalElements())
                 .put("pageNo", pageNo)
                 .put("pageSize", pageSize);
     }
 
     @ApiOperation(value = "添加商务线", notes = "添加一条商务线，返回商务线id")
+    @CoolLogger(action = "addBusinessLine", remark = "添加一条商务线", targetType = "pipeline")
     @PostMapping(value = "/info", produces = "application/json")
     public ResponseMessage addBusinessLine(@Validated @RequestBody NewBizLineVo newBizLineVo) {
         businessLineService.addBizPipeline(newBizLineVo);

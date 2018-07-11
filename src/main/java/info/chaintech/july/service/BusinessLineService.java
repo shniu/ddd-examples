@@ -1,6 +1,7 @@
 package info.chaintech.july.service;
 
 import info.chaintech.july.service.dto.BizLineDto;
+import info.chaintech.july.service.dto.BizPipelinesPageableDto;
 import info.chaintech.july.web.vo.NewBizLineVo;
 import org.springframework.data.domain.Pageable;
 
@@ -15,7 +16,7 @@ public interface BusinessLineService {
     /**
      * 查询商务线列表
      */
-    List<BizLineDto> queryBizLinesPageable(Pageable pageable);
+    BizPipelinesPageableDto queryBizLinesPageable(Pageable pageable);
 
     /**
      * 添加一条商务线

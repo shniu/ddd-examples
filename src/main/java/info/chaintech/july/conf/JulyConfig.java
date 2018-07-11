@@ -3,6 +3,7 @@ package info.chaintech.july.conf;
 import info.chaintech.july.dao.BusinessPipelineRepository;
 import info.chaintech.july.service.BusinessLineService;
 import info.chaintech.july.service.impl.BusinessLineServiceImpl;
+import info.chaintech.july.commons.utils.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class JulyConfig {
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
     @Bean
     public BusinessLineService businessLineService(BusinessPipelineRepository businessPipelineRepository) {

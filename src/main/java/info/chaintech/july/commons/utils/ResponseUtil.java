@@ -1,4 +1,4 @@
-package info.chaintech.july.utils;
+package info.chaintech.july.commons.utils;
 
 import com.google.common.base.Charsets;
 import info.chaintech.july.web.message.ResponseMessage;

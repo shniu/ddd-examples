@@ -1,6 +1,6 @@
 package info.chaintech.july.web.error;
 
-import info.chaintech.july.utils.ResponseUtil;
+import info.chaintech.july.commons.utils.ResponseUtil;
 import info.chaintech.july.web.message.ResponseCode;
 import info.chaintech.july.web.message.ResponseMessage;
 import lombok.extern.slf4j.Slf4j;
