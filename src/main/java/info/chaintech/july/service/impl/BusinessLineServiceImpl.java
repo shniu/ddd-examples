@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -29,7 +30,7 @@ public class BusinessLineServiceImpl implements BusinessLineService {
 
     @Override
     public BizPipelinesPageableDto queryBizLinesPageable(Pageable pageable) {
-        Page<BusinessPipeline> all = businessPipelineRepository.findAll(pageable);
+        Page<BusinessPipeline> all = businessPipelineRepository.findAllByDisabledFalse(pageable);
         BizPipelinesPageableDto bizPipelinesPageableDto = new  BizPipelinesPageableDto();
         bizPipelinesPageableDto.setTotalElements(all.getTotalElements());
         all.getContent().forEach(businessPipeline -> {
@@ -52,6 +53,16 @@ public class BusinessLineServiceImpl implements BusinessLineService {
         businessPipeline.setStatus(PipelineStatus.valueOf(newBizLineVo.getStatus()));
         businessPipeline.setInChargeUser(newBizLineVo.getInChargeUser());
         businessPipeline.setCreatedUser(null);  // Todo
+        businessPipeline.setDisabled(false);
         businessPipelineRepository.save(businessPipeline);
+    }
+
+    @Override
+    public void deleteBizLine(long bizId) {
+        Optional<BusinessPipeline> bizLine = businessPipelineRepository.findById(bizId);
+        bizLine.ifPresent(businessPipeline -> {
+            businessPipeline.setDisabled(true);
+            businessPipelineRepository.save(businessPipeline);
+        });
     }
 }

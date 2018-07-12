@@ -9,5 +9,6 @@ public enum TodoStatus {
     Todo,  // 未处理
     Doing, // 处理中
     Done,  // 完成
-    Ignore  // 忽略
+    Ignore,  // 忽略
+    Deleted  // 已删除
 }

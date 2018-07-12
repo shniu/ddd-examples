@@ -1,9 +1,12 @@
 package info.chaintech.july.conf;
 
 import info.chaintech.july.dao.BusinessPipelineRepository;
+import info.chaintech.july.dao.PipeTodoRepository;
 import info.chaintech.july.service.BusinessLineService;
+import info.chaintech.july.service.PipeTodoService;
 import info.chaintech.july.service.impl.BusinessLineServiceImpl;
 import info.chaintech.july.commons.utils.ModelMapper;
+import info.chaintech.july.service.impl.PipeTodoServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,5 +27,11 @@ public class JulyConfig {
     @Bean
     public BusinessLineService businessLineService(BusinessPipelineRepository businessPipelineRepository) {
         return new BusinessLineServiceImpl(businessPipelineRepository);
+    }
+
+    @Bean
+    public PipeTodoService pipeTodoService(PipeTodoRepository pipeTodoRepository,
+                                           BusinessPipelineRepository businessPipelineRepository) {
+        return new PipeTodoServiceImpl(pipeTodoRepository, businessPipelineRepository);
     }
 }

@@ -60,6 +60,11 @@ public class BusinessPipeline {
     private User createdUser;
 
     /**
+     * 逻辑删除
+     */
+    private boolean disabled;
+
+    /**
      * 添加时间
      */
     @CreatedDate

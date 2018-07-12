@@ -36,6 +36,7 @@ public class BusinessLineController {
             @ApiImplicitParam(name = "pageNo", paramType = "path", value = "页码", dataType = "string"),
             @ApiImplicitParam(name = "pageSize", paramType = "path", value = "每页大小", dataType = "string")
     })
+    @CoolLogger(action = "getBizPipelines", remark = "获取商务线列表")
     @GetMapping("/list/{pageNo}/{pageSize}")
     public MapResponseMessage lineListPageable(@PathVariable int pageNo, @PathVariable int pageSize) {
         BizPipelinesPageableDto bizPipelinesPageableDto = businessLineService.queryBizLinesPageable(PageRequest.of(pageNo, pageSize));
@@ -48,9 +49,17 @@ public class BusinessLineController {
 
     @ApiOperation(value = "添加商务线", notes = "添加一条商务线，返回商务线id")
     @CoolLogger(action = "addBusinessLine", remark = "添加一条商务线", targetType = "pipeline")
-    @PostMapping(value = "/info", produces = "application/json")
+    @PostMapping(value = "/info", produces = "application/json", consumes = "application/json")
     public ResponseMessage addBusinessLine(@Validated @RequestBody NewBizLineVo newBizLineVo) {
         businessLineService.addBizPipeline(newBizLineVo);
+        return ResponseMessage.ok();
+    }
+
+    @ApiOperation(value = "删除商务线", notes = "删除一条商务线")
+    @CoolLogger(remark = "删除一条商务线", action = "deleteBizLine")
+    @DeleteMapping(value = "/info/{bizId}", produces = "application/json", consumes = "application/json")
+    public ResponseMessage<Void> deleteBizLine(@PathVariable long bizId) {
+        businessLineService.deleteBizLine(bizId);
         return ResponseMessage.ok();
     }
 }

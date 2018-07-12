@@ -23,4 +23,6 @@ public interface BusinessLineService {
      * @param newBizLineVo new pipeline
      */
     void addBizPipeline(NewBizLineVo newBizLineVo);
+
+    void deleteBizLine(long bizId);
 }
