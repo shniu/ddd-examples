@@ -40,6 +40,7 @@ public class PipeTodoController {
     }
 
     @ApiOperation(value = "获取todo待办列表", notes = "获取某条商务线下的所有todo待办列表")
+    @CoolLogger(remark = "获取todo待办列表", action = "getTodos", targetType = "todo")
     @GetMapping("/{bizId}/todo")
     public ResponseMessage<List<PipeTodoDto>> getTodoCollections(@PathVariable long bizId) {
         List<PipeTodoDto> pipeTodoDtos = pipeTodoService.findAllTodos(bizId);
@@ -47,11 +48,32 @@ public class PipeTodoController {
     }
 
     @ApiOperation(value = "获取指定的某个todo", notes = "获取指定的某个todo")
+    @CoolLogger(remark = "获取指定的某个todo")
     @GetMapping("/todo/{todoId}")
     public ResponseMessage getTodo(@PathVariable int todoId) {
         log.info("todoId: {}", todoId);
         return ResponseMessage.ok();
     }
 
+    /**
+     * 删除todo
+     */
+    @ApiOperation(value = "删除指定的某个todo", notes = "删除指定的某个todo")
+    @CoolLogger(remark = "删除指定的某个todo", action = "deleteTodo")
+    @DeleteMapping("/todo/{todoId}")
+    public ResponseMessage<Void> delTodo(@PathVariable int todoId) {
+        pipeTodoService.deleteTodo(todoId);
+        return ResponseMessage.ok();
+    }
 
+    /**
+     * 修改todo
+     */
+    @ApiOperation(value = "修改todo", notes = "修改todo")
+    @CoolLogger(remark = "修改todo", action = "toggleTodo")
+    @PutMapping("/todo")
+    public ResponseMessage<Void> delTodo(@RequestBody ToggleTodoVo toggleTodoVo) {
+        pipeTodoService.toggleTodo(toggleTodoVo);
+        return ResponseMessage.ok();
+    }
 }

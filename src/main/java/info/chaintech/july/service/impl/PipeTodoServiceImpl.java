@@ -7,6 +7,7 @@ import info.chaintech.july.domain.PipeTodo;
 import info.chaintech.july.domain.enums.TodoStatus;
 import info.chaintech.july.service.PipeTodoService;
 import info.chaintech.july.service.dto.PipeTodoDto;
+import info.chaintech.july.web.controller.ToggleTodoVo;
 import info.chaintech.july.web.vo.TodoVo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ public class PipeTodoServiceImpl implements PipeTodoService {
             PipeTodo pipeTodo = new PipeTodo();
             pipeTodo.setBusinessPipeline(businessPipeline);
             pipeTodo.setContent(todoVo.getContent());
+            pipeTodo.setTodoStatus(TodoStatus.Todo);
             pipeTodoRepository.save(pipeTodo);
             return pipeTodo;
         }).orElse(null);
@@ -54,5 +56,29 @@ public class PipeTodoServiceImpl implements PipeTodoService {
                 return pipeTodoDto;
             }).collect(Collectors.toList());
         }).orElse(null);
+    }
+
+    @Override
+    public boolean deleteTodo(long todoId) {
+        Optional<PipeTodo> todo = pipeTodoRepository.findById(todoId);
+        todo.ifPresent(pipeTodo -> {
+            pipeTodo.setTodoStatus(TodoStatus.Deleted);
+            pipeTodoRepository.save(pipeTodo);
+        });
+        return true;
+    }
+
+    @Override
+    public boolean toggleTodo(ToggleTodoVo toggleTodoVo) {
+        Optional<PipeTodo> todo = pipeTodoRepository.findById(toggleTodoVo.getTid());
+        return todo.map(pipeTodo -> {
+            if (toggleTodoVo.isCompleted()) {
+                pipeTodo.setTodoStatus(TodoStatus.Done);
+            } else {
+                pipeTodo.setTodoStatus(TodoStatus.Todo);
+            }
+            pipeTodoRepository.save(pipeTodo);
+            return true;
+        }).orElse(false);
     }
 }
