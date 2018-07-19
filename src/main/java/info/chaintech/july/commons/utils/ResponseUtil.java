@@ -7,12 +7,6 @@ import org.springframework.http.MediaType;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @author shniu
- * @date 2018-07-11 下午8:11
- * @email niushaohan@digcredit.com
- */
-
 public class ResponseUtil {
 
     public static void writeResponse(HttpServletResponse response, ResponseMessage respModel) throws IOException {
