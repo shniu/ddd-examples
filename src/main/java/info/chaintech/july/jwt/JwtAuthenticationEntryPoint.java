@@ -33,6 +33,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
         // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         ResponseUtil.writeResponse(response, ResponseMessage.error(ResponseCode.Unauthorized));
-        log.debug("认证失败, 响应状态: {}", response.getStatus());
+        log.info("认证失败, 响应状态: {}", response.getStatus());
     }
 }

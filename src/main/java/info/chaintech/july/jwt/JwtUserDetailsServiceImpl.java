@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 
 /**
  * @author shniu
@@ -27,15 +28,16 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (!optionalUser.isPresent()) {
             String err = String.format("使用用户名 %s 未查询到用户", username);
             log.warn(err);
             throw new UsernameNotFoundException(err);
         }
+
         JwtUserDto jwtUserDto = new JwtUserDto();
         try {
-            BeanUtils.copyProperties(jwtUserDto, user);
+            BeanUtils.copyProperties(jwtUserDto, optionalUser.get());
         } catch (IllegalAccessException | InvocationTargetException e) {
             log.error("User convert to JwtUserDto occur error, please check it, error: {}", e);
         }

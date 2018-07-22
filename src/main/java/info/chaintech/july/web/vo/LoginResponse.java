@@ -7,4 +7,7 @@ import lombok.Data;
 @Data
 public class LoginResponse {
     private String token;
+    private String realName;
+    private String username;
+    private String registerOn;
 }

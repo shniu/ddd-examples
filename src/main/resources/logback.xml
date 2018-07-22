@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <appender name="AUDIT_EXCEPTION_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>exceptions.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS} Exception] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="org.mongodb.driver" level="WARN"/>
+
+<!--    <logger name="ExceptionLog" level="ERROR">
+        <appender-ref ref="AUDIT_EXCEPTION_FILE"/>
+    </logger>-->
+
+    <logger name="info.chaintech" level="DEBUG"/>
+
+</configuration>

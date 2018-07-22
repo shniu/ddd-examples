@@ -2,6 +2,7 @@ package info.chaintech.july.conf;
 
 import info.chaintech.july.dao.BusinessPipelineRepository;
 import info.chaintech.july.dao.PipeTodoRepository;
+import info.chaintech.july.dao.UserRepository;
 import info.chaintech.july.service.BusinessLineService;
 import info.chaintech.july.service.PipeTodoService;
 import info.chaintech.july.service.UserService;
@@ -38,7 +39,7 @@ public class JulyConfig {
     }
 
     @Bean
-    public UserService userService() {
-        return new UserServiceImpl();
+    public UserService userService(UserRepository userRepository) {
+        return new UserServiceImpl(userRepository);
     }
 }

@@ -5,10 +5,12 @@ import info.chaintech.july.domain.User;
 import info.chaintech.july.jwt.JwtAuthorizationHelper;
 import info.chaintech.july.jwt.JwtClaims;
 import info.chaintech.july.service.UserService;
+import info.chaintech.july.web.message.ResponseCode;
 import info.chaintech.july.web.message.ResponseMessage;
 import info.chaintech.july.web.vo.LoginResponse;
 import info.chaintech.july.web.vo.LoginVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tools.ant.util.DateUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +47,7 @@ public class AuthorizationController {
         User user = userService.login(loginVo);
         log.debug("user={}", user);
         if (null == user) {
-            return ResponseMessage.error();
+            return ResponseMessage.error(ResponseCode.Unauthorized);
         }
 
         JwtClaims jwtClaims = new JwtClaims();
@@ -53,6 +55,9 @@ public class AuthorizationController {
         jwtClaims.setUsername(user.getUsername());
         jwtClaims.setExpiredMs(expiredMs);
         String token = JwtAuthorizationHelper.createJwt(jwtClaims, jwtSecret);
-        return ResponseMessage.ok(new LoginResponse(token));
+
+        LoginResponse loginResponse = new LoginResponse(token, user.getRealName(),
+                user.getUsername(), DateUtils.format(user.getCreatedOn(), "yyyy-MM-dd HH:mm:ss"));
+        return ResponseMessage.ok(loginResponse);
     }
 }
