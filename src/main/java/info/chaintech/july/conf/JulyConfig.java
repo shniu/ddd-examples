@@ -4,14 +4,17 @@ import info.chaintech.july.dao.BusinessPipelineRepository;
 import info.chaintech.july.dao.PipeTodoRepository;
 import info.chaintech.july.dao.UserRepository;
 import info.chaintech.july.service.BusinessLineService;
+import info.chaintech.july.service.EmailService;
 import info.chaintech.july.service.PipeTodoService;
 import info.chaintech.july.service.UserService;
 import info.chaintech.july.service.impl.BusinessLineServiceImpl;
 import info.chaintech.july.commons.utils.ModelMapper;
+import info.chaintech.july.service.impl.EmailServiceImpl;
 import info.chaintech.july.service.impl.PipeTodoServiceImpl;
 import info.chaintech.july.service.impl.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 
 /**
  * @author shniu
@@ -41,5 +44,10 @@ public class JulyConfig {
     @Bean
     public UserService userService(UserRepository userRepository) {
         return new UserServiceImpl(userRepository);
+    }
+
+    @Bean
+    public EmailService emailService(JavaMailSender javaMailSender) {
+        return new EmailServiceImpl(javaMailSender);
     }
 }
