@@ -2,8 +2,12 @@ package info.chaintech.july.service.impl;
 
 import info.chaintech.july.service.BusinessLineService;
 import info.chaintech.july.service.EmailService;
+import info.chaintech.july.service.dto.PendingMailDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author shniu
@@ -20,7 +24,12 @@ public class SmartMailRunnable implements Runnable {
 
     @Override
     public void run() {
-        log.info("成功发送一封邮件");
+        log.info("成功发送一封邮件, emailService={}, businessLineService={}", emailService, businessLineService);
+        // 获取邮件列表
+        List<PendingMailDto> pendingMails = businessLineService.pendingEmails();
+        // 执行发送邮件
+        CompletableFuture completableFuture;
+        // 记录邮件发送结果
     }
 
 }

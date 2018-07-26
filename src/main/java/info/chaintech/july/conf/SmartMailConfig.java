@@ -6,6 +6,7 @@ import info.chaintech.july.service.TaskSchedulerService;
 import info.chaintech.july.service.impl.SmartMailRunnable;
 import info.chaintech.july.service.impl.TaskSchedulerServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @Configuration
 @Slf4j
 public class SmartMailConfig {
+
+    @Value("${july.mail.enable}")
+    public boolean mailEnable;
+    @Value("${july.mail.cron}")
+    public String mailCron;
 
     @Bean
     public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
@@ -38,10 +44,17 @@ public class SmartMailConfig {
                                                EmailService emailService,
                                                BusinessLineService businessLineService) {
         return args -> {
-            // 启动一个调度任务
-            log.info("启动发送邮件的调度任务");
-            SmartMailRunnable smartMailRunnable = new SmartMailRunnable(emailService, businessLineService);
-            taskSchedulerService.startCron(smartMailRunnable, "0/5 * * * * *");
+            if (mailEnable) {
+                log.info("July 的邮件发送调度服务已开启, 开始初始化调度服务");
+
+                // 启动一个调度任务
+                SmartMailRunnable smartMailRunnable = new SmartMailRunnable(emailService, businessLineService);
+                taskSchedulerService.startCron(smartMailRunnable, mailCron);
+                
+                log.info("邮件发送调度服务初始化完成!");
+            } else {
+                log.info("July 的邮件发送调度服务已关闭");
+            }
         };
     }
 }

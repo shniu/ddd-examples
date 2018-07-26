@@ -7,6 +7,7 @@ import info.chaintech.july.domain.enums.PipelineStatus;
 import info.chaintech.july.service.BusinessLineService;
 import info.chaintech.july.service.dto.BizLineDto;
 import info.chaintech.july.service.dto.BizPipelinesPageableDto;
+import info.chaintech.july.service.dto.PendingMailDto;
 import info.chaintech.july.web.security.SecurityHelper;
 import info.chaintech.july.web.vo.NewBizLineVo;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -66,5 +69,10 @@ public class BusinessLineServiceImpl implements BusinessLineService {
             businessPipeline.setDisabled(true);
             businessPipelineRepository.save(businessPipeline);
         });
+    }
+
+    @Override
+    public List<PendingMailDto> pendingEmails() {
+        return Collections.emptyList();
     }
 }
