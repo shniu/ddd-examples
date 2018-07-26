@@ -16,12 +16,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
- * Created by shniu on 2018/7/9.
+ * @author shniu
+ * @date 2018/7/9
  */
 
 @AllArgsConstructor
@@ -33,7 +32,7 @@ public class BusinessLineServiceImpl implements BusinessLineService {
     @Override
     public BizPipelinesPageableDto queryBizLinesPageable(Pageable pageable) {
         Page<BusinessPipeline> all = businessPipelineRepository.findAllByDisabledFalse(pageable);
-        BizPipelinesPageableDto bizPipelinesPageableDto = new  BizPipelinesPageableDto();
+        BizPipelinesPageableDto bizPipelinesPageableDto = new BizPipelinesPageableDto();
         bizPipelinesPageableDto.setTotalElements(all.getTotalElements());
         all.getContent().forEach(businessPipeline -> {
             BizLineDto bizLineDto = new BizLineDto();
@@ -48,7 +47,7 @@ public class BusinessLineServiceImpl implements BusinessLineService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void addBizPipeline(NewBizLineVo newBizLineVo) {
         User loginUser = SecurityHelper.getUser();
         BusinessPipeline businessPipeline = new BusinessPipeline();

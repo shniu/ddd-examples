@@ -10,7 +10,10 @@ import java.util.Collection;
 import java.util.Date;
 
 /**
- * Created by shniu on 2018/7/7.
+ * 用户表
+ *
+ * @author shniu
+ * @date 2018/7/7
  */
 
 @Entity
@@ -37,6 +40,9 @@ public class User {
 
     @Column(length = 10)
     private String sex;
+
+    @Column(length = 64)
+    private String email;
 
     @CreatedDate
     private Date createdOn;

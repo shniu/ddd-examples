@@ -1,7 +1,9 @@
 package info.chaintech.july.service;
 
 /**
- * Created by shniu on 2018/7/24.
+ *
+ * @author shniu
+ * @date 2018/7/24
  */
 public interface EmailService {
 

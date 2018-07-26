@@ -1,6 +1,5 @@
 package info.chaintech.july.domain;
 
-import info.chaintech.july.domain.enums.TodoStatus;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,40 +9,45 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
+ * 邮件收件人列表
  *
  * @author shniu
- * @date 2018/7/7
+ * @date 2018-07-26 下午3:33
  */
 
 @Entity
-@Table(name = "pipe_todo")
+@Table(name = "recipients")
 @EntityListeners(AuditingEntityListener.class)
 @Data
-public class PipeTodo {
+public class Recipients {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long tid;
 
     /**
-     * 商务线
+     * 收件人邮箱
      */
-    @ManyToOne(targetEntity = BusinessPipeline.class)
-    @JoinColumn(name = "biz_id", referencedColumnName = "bizId")
-    private BusinessPipeline businessPipeline;
+    @Column(length = 128)
+    private String email;
 
     /**
-     * content
-     */
-    @Lob
-    @Column(columnDefinition = "TEXT")
-    private String content;
-
-    /**
-     * 待办状态
+     * 收件人姓名
      */
     @Column(length = 32)
-    @Enumerated(EnumType.STRING)
-    private TodoStatus todoStatus;
+    private String name;
+
+    /**
+     * 添加人
+     */
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(name = "uid", referencedColumnName = "uid")
+    private User user;
+
+    /**
+     * 是否可用
+     */
+    private boolean enabled;
 
     /**
      * 创建时间

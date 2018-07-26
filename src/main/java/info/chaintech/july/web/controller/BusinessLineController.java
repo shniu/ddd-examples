@@ -16,7 +16,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Created by shniu on 2018/7/9.
+ *
+ * @author shniu
+ * @date 2018/7/9
  */
 
 @Api(value = "商务线接口", description = "商务线相关的接口集合", consumes = "application/json", produces = "application/json")
