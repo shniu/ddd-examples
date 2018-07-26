@@ -41,6 +41,8 @@ public class MailLog {
     /**
      * 收件人
      */
+    @ManyToOne()
+    @JoinColumn(name = "recipient_id", referencedColumnName = "uid")
     private User recipient;
 
     /**
