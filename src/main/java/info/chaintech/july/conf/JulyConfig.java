@@ -11,6 +11,7 @@ import info.chaintech.july.commons.utils.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 /**
  * @author shniu
@@ -45,6 +46,11 @@ public class JulyConfig {
     @Bean
     public UserService userService(UserRepository userRepository) {
         return new UserServiceImpl(userRepository);
+    }
+
+    @Bean
+    public JavaMailSender javaMailSender() {
+        return new JavaMailSenderImpl();
     }
 
     @Bean

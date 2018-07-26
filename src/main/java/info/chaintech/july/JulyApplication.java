@@ -15,8 +15,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Slf4j
 public class JulyApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(JulyApplication.class, args);
-		log.info("July 服务启动成功 ...");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(JulyApplication.class, args);
+        log.info("July 服务启动成功 ...");
+    }
 }
