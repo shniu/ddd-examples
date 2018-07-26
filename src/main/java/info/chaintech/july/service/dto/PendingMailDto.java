@@ -2,6 +2,9 @@ package info.chaintech.july.service.dto;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author shniu
  * @date 2018-07-26 下午9:03
@@ -10,7 +13,14 @@ import lombok.Data;
 
 @Data
 public class PendingMailDto {
-    private String email;
+    private String to;
     private String title;
-    private String content;
+    private List<BizEmailDto> bizEmailDtoList = new ArrayList<>();
+
+    @Data
+    public class BizEmailDto {
+        private String topic;
+        private String status;
+        private List<String> todoList = new ArrayList<>();
+    }
 }

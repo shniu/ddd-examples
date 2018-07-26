@@ -1,5 +1,7 @@
 package info.chaintech.july.service;
 
+import java.util.List;
+
 /**
  *
  * @author shniu
@@ -14,5 +16,5 @@ public interface EmailService {
      * @param title   邮件标题
      * @param content 邮件正文
      */
-    void sendMail(String sendTo, String title, String content);
+    void sendMail(String sendTo, String title, List<?> content);
 }

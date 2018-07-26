@@ -8,10 +8,12 @@ import info.chaintech.july.domain.PipeProgress;
 import info.chaintech.july.service.*;
 import info.chaintech.july.service.impl.*;
 import info.chaintech.july.commons.utils.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 /**
  * @author shniu
@@ -20,6 +22,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 @Configuration
 public class JulyConfig {
+
+    @Value("${spring.mail.username}")
+    private String from;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -48,13 +53,13 @@ public class JulyConfig {
         return new UserServiceImpl(userRepository);
     }
 
-    @Bean
+    /*@Bean
     public JavaMailSender javaMailSender() {
         return new JavaMailSenderImpl();
-    }
+    }*/
 
     @Bean
-    public EmailService emailService(JavaMailSender javaMailSender) {
-        return new EmailServiceImpl(javaMailSender);
+    public EmailService emailService(JavaMailSender javaMailSender, FreeMarkerConfigurer configurer) {
+        return new EmailServiceImpl(from, javaMailSender, configurer);
     }
 }

@@ -26,9 +26,14 @@ public class SmartMailRunnable implements Runnable {
     public void run() {
         log.info("成功发送一封邮件, emailService={}, businessLineService={}", emailService, businessLineService);
         // 获取邮件列表
-        List<PendingMailDto> pendingMails = businessLineService.pendingEmails();
+        List<PendingMailDto> pendingMails = businessLineService.pendingMailBusinessLines();
         // 执行发送邮件
-        CompletableFuture completableFuture;
+        // CompletableFuture completableFuture;
+
+        pendingMails.forEach(pendingMailDto -> emailService.sendMail(
+                pendingMailDto.getTo(), pendingMailDto.getTitle(), pendingMailDto.getBizEmailDtoList()
+        ));
+
         // 记录邮件发送结果
     }
 

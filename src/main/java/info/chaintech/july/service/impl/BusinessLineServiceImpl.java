@@ -2,8 +2,10 @@ package info.chaintech.july.service.impl;
 
 import info.chaintech.july.dao.BusinessPipelineRepository;
 import info.chaintech.july.domain.BusinessPipeline;
+import info.chaintech.july.domain.PipeTodo;
 import info.chaintech.july.domain.User;
 import info.chaintech.july.domain.enums.PipelineStatus;
+import info.chaintech.july.domain.enums.TodoStatus;
 import info.chaintech.july.service.BusinessLineService;
 import info.chaintech.july.service.dto.BizLineDto;
 import info.chaintech.july.service.dto.BizPipelinesPageableDto;
@@ -14,12 +16,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tools.ant.util.DateUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * @author shniu
@@ -72,7 +76,48 @@ public class BusinessLineServiceImpl implements BusinessLineService {
     }
 
     @Override
-    public List<PendingMailDto> pendingEmails() {
-        return Collections.emptyList();
+    public List<PendingMailDto> pendingMailBusinessLines() {
+
+        log.info("整合待发送的邮件...");
+
+        Page<BusinessPipeline> allPendingPipelines = businessPipelineRepository.findAllByDisabledFalse(
+                PageRequest.of(0, Integer.MAX_VALUE)
+        );
+
+        List<PendingMailDto> pendingMailDtoList = new ArrayList<>();
+        allPendingPipelines.getContent().stream()
+                .collect(groupingBy(BusinessPipeline::getInChargeUser))
+                .forEach((inChargeUser, businessPipelines) -> {
+                    // Every Recipients
+                    PendingMailDto pendingMailDto = new PendingMailDto();
+                    pendingMailDto.setTo("syphniushaohan@126.com");  // Todo
+                    pendingMailDto.setTitle(titleTemplate(inChargeUser));
+                    businessPipelines.forEach(businessPipeline -> {
+                        PendingMailDto.BizEmailDto bizEmailDto = pendingMailDto.new BizEmailDto();
+                        bizEmailDto.setTopic(businessPipeline.getTopic());
+                        bizEmailDto.setStatus(businessPipeline.getStatus().name());
+
+                        List<String> todoList = businessPipeline.getPipeTodoList().stream()
+                                .filter(pipeTodo -> TodoStatus.Todo.equals(pipeTodo.getTodoStatus()))
+                                .map(PipeTodo::getContent)
+                                .collect(Collectors.toList());
+                        bizEmailDto.setTodoList(todoList);
+
+                        pendingMailDto.getBizEmailDtoList().add(bizEmailDto);
+                    });
+
+                    pendingMailDtoList.add(pendingMailDto);
+                });
+
+        return pendingMailDtoList;
+    }
+
+    private String titleTemplate(String inChargeUserName) {
+        String tpl = "%s 商务进展（%s）";
+        return String.format(
+                tpl,
+                DateUtils.format(new Date(), "yyyy.MM.dd"),
+                inChargeUserName
+        );
     }
 }

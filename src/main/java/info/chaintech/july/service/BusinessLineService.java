@@ -42,5 +42,5 @@ public interface BusinessLineService {
      *
      * @return pending emails
      */
-    List<PendingMailDto> pendingEmails();
+    List<PendingMailDto> pendingMailBusinessLines();
 }
