@@ -24,31 +24,70 @@
             text-align: center;
             padding-top: 5px;
             padding-bottom: 4px;
-            background-color: #24A9E1;
-            color: #ffffff;
+            background-color: #ffffff;
+            color: #24A9E1;
         }
     </style>
     <body>
         <div>
+            <div>
+                <h3>当前商务线今日进展</h3>
 
-            <h3>当前商务线今日进展</h3>
+                <table id="customers">
+                    <tr>
+                        <th>序号</th>
+                        <th>商务线</th>
+                        <th>更新前状态</th>
+                        <th>更新前Todo</th>
+                        <th>今日进展</th>
+                        <th>更新后Todo</th>
+                        <th>更新后状态</th>
+                    </tr>
 
-            <table id="customers">
-                <tr>
-                    <th>序号</th>
-                    <th>商务线</th>
-                    <th>更新前状态</th>
-                    <th>更新前todo</th>
-                    <th>今日进展</th>
-                </tr>
-                <tr>
-                    <th>1</th>
-                    <th>demo</th>
-                    <th>K2</th>
-                    <th>无</th>
-                    <th></th>
-                </tr>
-            </table>
+                <#list bizLines as item>
+                    <tr>
+                        <td>${item.bizCode}</td>
+                        <td>${item.topic}</td>
+                        <td>${item.status}</td>
+                        <td>
+
+                            <#if item.todoList?size != 0>
+                                <ul>
+                                    <#list item.todoList as todo>
+                                        <li>${todo}</li>
+                                    </#list>
+                                </ul>
+                            <#else >
+                                -
+                            </#if>
+
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </#list>
+
+                </table>
+            </div>
+
+            <div>
+                <h3>新增商务线今日进展</h3>
+                <table id="customers">
+                    <tr>
+                        <th>商务线</th>
+                        <th>状态</th>
+                        <th>今日进展</th>
+                        <th>Todo</th>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
 
         </div>
     </body>
