@@ -49,8 +49,8 @@ public class EmailServiceImpl implements EmailService {
             helper.setSubject(MimeUtility.encodeText(subject, ENCODING, "B"));
 
             Template template = configurer.getConfiguration().getTemplate("message.ftl");
-            String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, new HashMap<String, List<?>>(1){{
-                put("biz", content);
+            String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, new HashMap<String, Object>(){{
+                put("bizLines", content);
             }});
 
             helper.setText(text, true);

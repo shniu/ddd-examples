@@ -93,17 +93,19 @@ public class BusinessLineServiceImpl implements BusinessLineService {
                     pendingMailDto.setTo("syphniushaohan@126.com");  // Todo
                     pendingMailDto.setTitle(titleTemplate(inChargeUser));
                     businessPipelines.forEach(businessPipeline -> {
-                        PendingMailDto.BizEmailDto bizEmailDto = pendingMailDto.new BizEmailDto();
-                        bizEmailDto.setTopic(businessPipeline.getTopic());
-                        bizEmailDto.setStatus(businessPipeline.getStatus().name());
+
+                        Map<String, Object> bizEmailMap = new HashMap<>();
+                        bizEmailMap.put("bizCode", "P" + businessPipeline.getBizId());
+                        bizEmailMap.put("topic", businessPipeline.getTopic());
+                        bizEmailMap.put("status", businessPipeline.getStatus().name());
 
                         List<String> todoList = businessPipeline.getPipeTodoList().stream()
                                 .filter(pipeTodo -> TodoStatus.Todo.equals(pipeTodo.getTodoStatus()))
                                 .map(PipeTodo::getContent)
                                 .collect(Collectors.toList());
-                        bizEmailDto.setTodoList(todoList);
+                        bizEmailMap.put("todoList", todoList);
 
-                        pendingMailDto.getBizEmailDtoList().add(bizEmailDto);
+                        pendingMailDto.getBizEmailDtoList().add(bizEmailMap);
                     });
 
                     pendingMailDtoList.add(pendingMailDto);
