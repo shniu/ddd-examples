@@ -5,7 +5,9 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * Created by shniu on 2018/7/9.
+ *
+ * @author shniu
+ * @date 2018/7/9
  */
 
 @Data
@@ -14,5 +16,5 @@ public class NewBizLineVo {
     private String topic;
     @NotEmpty
     private String status;
-    private String inChargeUser;
+    private long inChargeUserId;
 }

@@ -4,12 +4,12 @@ import lombok.Data;
 
 /**
  * @author shniu
- * @date 2018-07-26 下午4:25
+ * @date 2018-07-28 下午3:56
  * @email niushaohan@digcredit.com
  */
 
 @Data
-public class ProgressQueryDto {
-    private String content;
-    private String createdOn;
+public class InChargeUserDto {
+    private long uid;
+    private String name;
 }

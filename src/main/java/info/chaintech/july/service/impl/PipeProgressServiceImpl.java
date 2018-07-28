@@ -9,10 +9,13 @@ import info.chaintech.july.service.dto.ProgressQueryDto;
 import info.chaintech.july.web.vo.NewProgressVo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tools.ant.util.DateUtils;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author shniu
@@ -29,8 +32,18 @@ public class PipeProgressServiceImpl implements PipeProgressService {
 
     @Override
     public List<ProgressQueryDto> queryProgressByBizId(long bizId) {
-        pipeProgressRepository.count();
-        return Collections.emptyList();
+        Optional<BusinessPipeline> businessPipelineOptional = businessPipelineRepository.findById(bizId);
+
+        return businessPipelineOptional.map(businessPipeline -> businessPipeline.getPipeProgresses()
+                .stream()
+                .sorted(Comparator.comparing(PipeProgress::getCreatedOn).reversed())
+                .map(pipeProgress -> {
+                    ProgressQueryDto progressQueryDto = new ProgressQueryDto();
+                    progressQueryDto.setContent(pipeProgress.getContent());
+                    progressQueryDto.setCreatedOn(DateUtils.format(pipeProgress.getCreatedOn(), "yyyy-MM-dd HH:MM"));
+                    return progressQueryDto;
+                }).collect(Collectors.toList())
+        ).orElse(Collections.emptyList());
     }
 
     @Override
@@ -40,7 +53,8 @@ public class PipeProgressServiceImpl implements PipeProgressService {
 
             PipeProgress pipeProgress = new PipeProgress();
             pipeProgress.setBusinessPipeline(businessPipeline);
-            pipeProgress.setContent(pipeProgress.getContent());
+            pipeProgress.setContent(newProgressDto.getContent());
+            pipeProgress.setTrackUser(businessPipeline.getCreatedUser());
             pipeProgressRepository.save(pipeProgress);
         });
     }

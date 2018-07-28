@@ -52,6 +52,7 @@ public class PipeTodoServiceImpl implements PipeTodoService {
                 PipeTodoDto pipeTodoDto = new PipeTodoDto();
                 pipeTodoDto.setTid(pipeTodo.getTid());
                 pipeTodoDto.setContent(pipeTodo.getContent());
+                pipeTodoDto.setCompleted(TodoStatus.Done.equals(pipeTodo.getTodoStatus()));
                 pipeTodoDto.setTodoStatus(pipeTodo.getTodoStatus().name());
                 pipeTodoDto.setStatusDesc(pipeTodo.getTodoStatus().name());
                 pipeTodoDto.setCreatedOn(DateUtils.format(pipeTodo.getCreatedOn(), "yyyy-MM-dd HH:mm:ss"));

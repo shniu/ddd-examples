@@ -11,7 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by shniu on 2018/7/7.
+ *
+ * @author shniu
+ * @date 2018/7/7
  *
  * 商务线model
  */
@@ -31,11 +33,16 @@ public class BusinessPipeline {
      */
     private String topic;
 
-    // 负责人, TODO
-    @Column(length = 64)
-    private String inChargeUser;
+    /**
+     * 负责人
+     */
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "in_charge_uid", referencedColumnName = "uid")
+    private User inChargeUser;
 
-    // 进展情况（随时添加，有多个）
+    /**
+     * 进展情况（随时添加，有多个）
+     */
     @OneToMany(mappedBy = "businessPipeline", fetch = FetchType.LAZY)
     private List<PipeProgress> pipeProgresses;
 

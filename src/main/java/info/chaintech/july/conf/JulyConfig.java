@@ -32,8 +32,9 @@ public class JulyConfig {
     }
 
     @Bean
-    public BusinessLineService businessLineService(BusinessPipelineRepository businessPipelineRepository) {
-        return new BusinessLineServiceImpl(businessPipelineRepository);
+    public BusinessLineService businessLineService(BusinessPipelineRepository businessPipelineRepository,
+                                                   UserRepository userRepository) {
+        return new BusinessLineServiceImpl(businessPipelineRepository, userRepository);
     }
 
     @Bean

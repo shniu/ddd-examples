@@ -1,7 +1,10 @@
 package info.chaintech.july.service;
 
 import info.chaintech.july.domain.User;
+import info.chaintech.july.service.dto.InChargeUserDto;
 import info.chaintech.july.web.vo.LoginVo;
+
+import java.util.List;
 
 /**
  * @author shniu
@@ -18,4 +21,11 @@ public interface UserService {
      * @return 登录用户对象, 不存在返回 null
      */
     User login(LoginVo loginVo);
+
+    /**
+     * 查询用户列表
+     *
+     * @return in charge user list
+     */
+    List<InChargeUserDto> findAllInChargeUser();
 }

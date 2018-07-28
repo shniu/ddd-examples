@@ -38,11 +38,18 @@ public class Recipients {
     private String name;
 
     /**
+     * 收件人
+     */
+    @ManyToOne()
+    @JoinColumn(name = "recipient_id", referencedColumnName = "uid")
+    private User recipient;
+
+    /**
      * 添加人
      */
     @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "uid", referencedColumnName = "uid")
-    private User user;
+    private User createdUser;
 
     /**
      * 是否可用

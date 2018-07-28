@@ -1,6 +1,7 @@
 package info.chaintech.july.service.impl;
 
 import info.chaintech.july.dao.BusinessPipelineRepository;
+import info.chaintech.july.dao.UserRepository;
 import info.chaintech.july.domain.BusinessPipeline;
 import info.chaintech.july.domain.PipeTodo;
 import info.chaintech.july.domain.User;
@@ -35,10 +36,12 @@ import static java.util.stream.Collectors.groupingBy;
 public class BusinessLineServiceImpl implements BusinessLineService {
 
     private BusinessPipelineRepository businessPipelineRepository;
+    private UserRepository userRepository;
 
     @Override
     public BizPipelinesPageableDto queryBizLinesPageable(Pageable pageable) {
-        Page<BusinessPipeline> all = businessPipelineRepository.findAllByDisabledFalse(pageable);
+        User loginUser = SecurityHelper.getUser();
+        Page<BusinessPipeline> all = businessPipelineRepository.findAllByCreatedUserAndDisabledFalse(loginUser, pageable);
         BizPipelinesPageableDto bizPipelinesPageableDto = new BizPipelinesPageableDto();
         bizPipelinesPageableDto.setTotalElements(all.getTotalElements());
         all.getContent().forEach(businessPipeline -> {
@@ -46,7 +49,7 @@ public class BusinessLineServiceImpl implements BusinessLineService {
             bizLineDto.setBizId(businessPipeline.getBizId());
             bizLineDto.setTopic(businessPipeline.getTopic());
             bizLineDto.setStatus(businessPipeline.getStatus().name());
-            bizLineDto.setInChargeUser(businessPipeline.getInChargeUser());
+            bizLineDto.setInChargeUser(businessPipeline.getInChargeUser().getRealName());
             bizLineDto.setCreatedOn(DateUtils.format(businessPipeline.getCreatedOn(), "yyyy-MM-dd HH:mm:ss"));
             bizPipelinesPageableDto.addBizLineDto(bizLineDto);
         });
@@ -56,14 +59,21 @@ public class BusinessLineServiceImpl implements BusinessLineService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addBizPipeline(NewBizLineVo newBizLineVo) {
-        User loginUser = SecurityHelper.getUser();
-        BusinessPipeline businessPipeline = new BusinessPipeline();
-        businessPipeline.setTopic(newBizLineVo.getTopic());
-        businessPipeline.setStatus(PipelineStatus.valueOf(newBizLineVo.getStatus()));
-        businessPipeline.setInChargeUser(newBizLineVo.getInChargeUser());
-        businessPipeline.setCreatedUser(loginUser);
-        businessPipeline.setDisabled(false);
-        businessPipelineRepository.save(businessPipeline);
+
+        Optional<User> userOptional = userRepository.findById(newBizLineVo.getInChargeUserId());
+        userOptional.ifPresent(inChargeUser -> {
+
+            User loginUser = SecurityHelper.getUser();
+            BusinessPipeline businessPipeline = new BusinessPipeline();
+            businessPipeline.setTopic(newBizLineVo.getTopic());
+            businessPipeline.setStatus(PipelineStatus.valueOf(newBizLineVo.getStatus()));
+            businessPipeline.setInChargeUser(inChargeUser);
+            businessPipeline.setCreatedUser(loginUser);
+            businessPipeline.setDisabled(false);
+            businessPipelineRepository.save(businessPipeline);
+
+        });
+
     }
 
     @Override
@@ -89,12 +99,13 @@ public class BusinessLineServiceImpl implements BusinessLineService {
                 .collect(groupingBy(BusinessPipeline::getInChargeUser))
                 .forEach((inChargeUser, businessPipelines) -> {
                     // Every Recipients
+                    // 判断给哪些人发邮件
                     PendingMailDto pendingMailDto = new PendingMailDto();
-                    pendingMailDto.setTo("syphniushaohan@126.com");  // Todo
-                    pendingMailDto.setTitle(titleTemplate(inChargeUser));
+                    pendingMailDto.setTo("syphniushaohan@126.com");
+                    pendingMailDto.setTitle(titleTemplate(inChargeUser.getRealName()));
                     businessPipelines.forEach(businessPipeline -> {
 
-                        Map<String, Object> bizEmailMap = new HashMap<>();
+                        Map<String, Object> bizEmailMap = new HashMap<>(8);
                         bizEmailMap.put("bizCode", "P" + businessPipeline.getBizId());
                         bizEmailMap.put("topic", businessPipeline.getTopic());
                         bizEmailMap.put("status", businessPipeline.getStatus().name());
