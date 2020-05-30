@@ -3,51 +3,94 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>info.chaintech</groupId>
-	<artifactId>july</artifactId>
+	<groupId>com.github.shniu</groupId>
+	<artifactId>ddd-examples</artifactId>
 	<version>0.0.1</version>
-	<packaging>jar</packaging>
+    <modules>
+        <module>ddd-leave</module>
+		<module>ddd-library</module>
+	</modules>
+    <packaging>pom</packaging>
 
-	<name>july</name>
-	<description>Business clue intelligent management</description>
-
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.3.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+	<name>ddd-examples</name>
+	<description>ddd examples</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring-boot-admin.version>2.0.0</spring-boot-admin.version>
-		<com.google.guava.version>23.0</com.google.guava.version>
-		<docker.image.prefix>registry.cn-qingdao.aliyuncs.com/syph</docker.image.prefix>
+		<com.google.guava.version>27.1-jre</com.google.guava.version>
+
+		<spring.boot.version>2.1.2.RELEASE</spring.boot.version>
+		<spring.cloud.version>Greenwich.RELEASE</spring.cloud.version>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<!-- Spring Boot -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!-- Spring Cloud -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring.cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-dependencies</artifactId>
+				<version>${spring-boot-admin.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- Swagger -->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>2.9.2</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>2.9.2</version>
+			</dependency>
+
+			<!-- Structured logging -->
+			<dependency>
+				<groupId>structlog4j</groupId>
+				<artifactId>structlog4j-api</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<!-- Optional JSON formatter -->
+			<dependency>
+				<groupId>structlog4j</groupId>
+				<artifactId>structlog4j-json</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/io.sentry/sentry -->
+			<dependency>
+				<groupId>io.sentry</groupId>
+				<artifactId>sentry</artifactId>
+				<version>1.7.17</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
+
 		<!--<dependency>
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-client</artifactId>
@@ -56,21 +99,6 @@
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-server</artifactId>
 		</dependency>-->
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-freemarker</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -110,16 +138,19 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -137,25 +168,7 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>de.codecentric</groupId>
-				<artifactId>spring-boot-admin-dependencies</artifactId>
-				<version>${spring-boot-admin.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<build>
 		<plugins>
@@ -184,31 +197,31 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>dockerfile-maven-plugin</artifactId>
-				<version>1.4.2</version>
-				<executions>
-					<execution>
-						<id>default</id>
-						<goals>
-							<goal>build</goal>
-							<goal>push</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<username>develop@35482511</username>
-					<password>docker0918</password>
-					<repository>${docker.image.prefix}/${project.artifactId}</repository>
-					<!--<tag></tag>-->
-					<skipBuild>false</skipBuild>
-					<buildArgs>
-						<APPLICATION_PROP>target/classes/application-prod.properties</APPLICATION_PROP>
-						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-					</buildArgs>
-				</configuration>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>com.spotify</groupId>-->
+<!--				<artifactId>dockerfile-maven-plugin</artifactId>-->
+<!--				<version>1.4.2</version>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>default</id>-->
+<!--						<goals>-->
+<!--							<goal>build</goal>-->
+<!--							<goal>push</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--				<configuration>-->
+<!--					<username>develop@35482511</username>-->
+<!--					<password>docker0918</password>-->
+<!--					<repository>${docker.image.prefix}/${project.artifactId}</repository>-->
+<!--					&lt;!&ndash;<tag></tag>&ndash;&gt;-->
+<!--					<skipBuild>false</skipBuild>-->
+<!--					<buildArgs>-->
+<!--						<APPLICATION_PROP>target/classes/application-prod.properties</APPLICATION_PROP>-->
+<!--						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>-->
+<!--					</buildArgs>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 
 			<plugin>
 				<groupId>org.jacoco</groupId>
@@ -239,6 +252,15 @@
 			<id>aliyun-nexus</id>
 			<name>aliyun</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+		</repository>
+
+		<!--https://github.com/jacek99/structlog4j-->
+		<repository>
+			<id>jcenter</id>
+			<url>http://jcenter.bintray.com</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 

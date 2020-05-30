@@ -1,3 +1,7 @@
-# july
+# ddd-examples
 
-This is a project for my wife, aimed to help her to manage business clues.
+ddd examples
+
+1. Online leave management
+2. Library
+
